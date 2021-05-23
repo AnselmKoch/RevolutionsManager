@@ -24,7 +24,7 @@ public class MainClass extends ListenerAdapter {
     public static JDA jda;
 
     public static void main(String[] args) throws IOException {
-        JDABuilder jdaBuilder = JDABuilder.createDefault("ODQzODk4MTgwMTI2MjQ0OTE2.YKKjbQ.D5h9dmviSpbgEAo0DnQ4k77p9QY");
+        JDABuilder jdaBuilder = JDABuilder.createDefault("token");
         jdaBuilder.setActivity(Activity.watching("Sturm auf die Bastille"));
         jdaBuilder.addEventListeners(new ReceiveCommandListener());
         jdaBuilder.addEventListeners(new ReadyListener());
