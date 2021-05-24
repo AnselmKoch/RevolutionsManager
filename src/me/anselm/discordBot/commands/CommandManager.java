@@ -1,11 +1,10 @@
 package me.anselm.discordBot.commands;
 
 import me.anselm.discordBot.MainClass;
-import me.anselm.discordBot.commands.command.AddTextCommand;
+import me.anselm.discordBot.commands.command.BindTextCommand;
 import me.anselm.discordBot.commands.command.ColorCommand;
-import me.anselm.discordBot.commands.command.RemoveTextCommand;
+import me.anselm.discordBot.commands.command.UnbindTextCommand;
 import me.anselm.discordBot.commands.command.TestCommand;
-import me.anselm.ello.Main;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.ArrayList;
@@ -15,8 +14,8 @@ public class CommandManager {
 
     public CommandManager() {
         commands.add(new ColorCommand("farbe", 0));
-        commands.add(new AddTextCommand("add", -2));
-        commands.add(new RemoveTextCommand("removeCMD", -1));
+        commands.add(new BindTextCommand("bind", -2));
+        commands.add(new UnbindTextCommand("unbind", -1));
         commands.add(new TestCommand("test", 321312));
     }
 

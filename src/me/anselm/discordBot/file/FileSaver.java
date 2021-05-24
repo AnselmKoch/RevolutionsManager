@@ -2,36 +2,40 @@ package me.anselm.discordBot.file;
 
 import me.anselm.discordBot.MainClass;
 import me.anselm.discordBot.commands.Command;
+import me.anselm.discordBot.file.savefiles.CommandFile;
+import me.anselm.ello.Main;
 
 import java.io.*;
 
 public class FileSaver {
 
 
-    public File file;
     private FileOutputStream fileOutputStream;
     private BufferedWriter bufferedWriter;
     private FileReader fileReader;
+    private SaveFile saveFile;
 
-    public FileSaver() throws IOException {
-        file = new File(MainClass.commandFilePath);
-        if(!file.exists()) {
-            try {
-                file.createNewFile();
-                System.out.println("Created file at " + file.getAbsolutePath());
-            } catch (IOException e) {
-                System.out.println("Failed to create Command save file...");
-                e.printStackTrace();
-            }
-        }
-        fileOutputStream = new FileOutputStream(file, true);
+    public FileSaver(SaveFile saveFile) throws FileNotFoundException {
+        this.saveFile = saveFile;
+        this.fileReader = saveFile.getFileReader();
+    }
+
+    public void writeString(String string) throws IOException {
+        fileOutputStream = new FileOutputStream(saveFile, true);
         bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
-        fileReader = new FileReader();
+        bufferedWriter.write(string);
+        bufferedWriter.newLine();
+        bufferedWriter.close();
+        fileReader.readFile(saveFile);
+        bufferedWriter.close();
     }
 
     public void saveCommand(Command command) throws IOException {
+        fileOutputStream = new FileOutputStream(saveFile, true);
+        bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
+        SaveFile saveFile = MainClass.fileManager.getSaveFileFromName("command");
         if(command.getTextChannel() != null) {
-            if(!fileReader.containsCommand(command)) {
+            if(!saveFile.getFileReader().containsString(command.getCmdName())) {
                 try {
                     bufferedWriter.write(command.getCmdName() + " " + command.getTextChannel().getId());
                 } catch (IOException e) {
@@ -49,6 +53,14 @@ public class FileSaver {
                 System.out.println("Test123");
             }
         }
-        fileReader.readFile();
+        fileReader.readFile(MainClass.fileManager.getSaveFileFromName("command"));
+    }
+
+    public SaveFile getSaveFile() {
+        return saveFile;
+    }
+
+    public BufferedWriter getBufferedWriter() {
+        return bufferedWriter;
     }
 }

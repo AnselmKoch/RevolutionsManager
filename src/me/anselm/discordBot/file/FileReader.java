@@ -5,6 +5,7 @@ import me.anselm.discordBot.commands.Command;
 import me.anselm.discordBot.commands.CommandManager;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FileReader {
@@ -12,21 +13,19 @@ public class FileReader {
     private ArrayList<String> fileStrings;
     private FileInputStream fileInputStream;
     private BufferedReader bufferedReader;
-    private File file = new File(MainClass.commandFilePath);
+    private SaveFile file;
 
-    public FileReader() throws IOException {
+    public FileReader(SaveFile file) throws IOException {
+        this.file = file;
         fileStrings = new ArrayList<>();
-        fileInputStream = new FileInputStream(file);
-        bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
-        readFile();
-        setUpCommands();
     }
 
-    public boolean containsCommand(Command command) {
-        for(String string: fileStrings) {
+    public void deleteString(String delete) {
+    }
+    public boolean containsString(String stringSearch) {
+        for(String string : fileStrings) {
             if(string != null) {
-                String commandToFind = string.split(" ")[0];
-                if(commandToFind.equalsIgnoreCase(command.getCmdName())) {
+                if(string.equalsIgnoreCase(stringSearch)) {
                     return true;
                 }
             }
@@ -34,20 +33,6 @@ public class FileReader {
         return false;
     }
 
-
-    public void setUpCommands() {
-        for(String string : fileStrings) {
-            if(string != null) {
-                String[] commands = string.split(" ");
-                System.out.println(commands[0]);
-                System.out.println(commands[1]);
-                Command command = CommandManager.getCommandFromName(commands[0]);
-                System.out.println(command.getCmdName());
-                command.setTextChannel(CommandManager.getTextChannelFromID(commands[1]));
-                System.out.println(command.getTextChannel());
-            }
-        }
-    }
     public Command getCommandInFile(Command command) {
         for(String string : fileStrings) {
             if(string != null) {
@@ -60,11 +45,20 @@ public class FileReader {
         return null;
     }
 
-    public void readFile() throws IOException {
+    public ArrayList<String> readFile(SaveFile saveFile) throws IOException {
+        fileInputStream = new FileInputStream(file);
+        bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+        ArrayList<String> arrayList = new ArrayList<>();
         String nextLine = bufferedReader.readLine();
         while(nextLine != null) {
-            fileStrings.add(nextLine);
+            arrayList.add(nextLine);
             nextLine = bufferedReader.readLine();
         }
+        bufferedReader.close();
+        return arrayList;
+    }
+
+    public BufferedReader getBufferedReader() {
+        return this.bufferedReader;
     }
 }

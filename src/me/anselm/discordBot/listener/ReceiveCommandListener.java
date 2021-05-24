@@ -42,11 +42,11 @@ public class ReceiveCommandListener extends ListenerAdapter {
                     }
                 }
 
-                event.getTextChannel().deleteMessageById(event.getMessageId()).queueAfter(10, TimeUnit.SECONDS);
-
             } else {
-                if (textChannel.getId().equals("843894124143050792")) {
-                    String[] words = {"Hallo", "Ich mag Äpfel", "Danke du auch", "Ich bin am ballen jeden tag weil ich ein baller bin", "no touching, i find it disgusting",
+                if (textChannel.getId().equals("843894124143050792") && (!event.getMember().getEffectiveName().equalsIgnoreCase("Revolution Manager"))) {
+                    String[] words = {
+                            "PokeTwo ist nicht cool!",
+                           "Hallo", "Ich mag Äpfel", "Danke du auch", "Ich bin am ballen jeden tag weil ich ein baller bin", "no touching, i find it disgusting",
                             "müsli mag ich am meisten als Frühstück", "Da gebe ich dir Recht!", "Das sehe ich auch so!", "Naja irgendwie sehe ich das anders", "Was laberst du?",
                             "Mach dich mal lieber aus meiner Leitung du birne", "Ich schmeiß dir so die Brügel naus", "Traut euch, kommt zu mir!", "1+1 ist 4", "Hab ein IQ von ca. 319",
                             "Nur der gefickte ist schwul", "Manchmal ist weniger echt weniger", "Manchmal ist mehr tatsache mehr", "looool als ob hahaha laber mal nicht",
@@ -55,13 +55,12 @@ public class ReceiveCommandListener extends ListenerAdapter {
                             "Im Herzen sind wir alle albaner", "Lieber im stuhl einschlafen als im schlaf einstuhlen", "Lieber arm dran als arm im darm", "Ich bin nicht faul, ich bin im Energiesparmodus",
                             "Draaaaain gaaaaaaaang", "Shououts to Ecco, he pulled up in a rover, drain my life", "Wer zuletzt lacht, hat es nicht eher verstanden",
                             "Menschen mit einem i im namen sind durschnittlich nicht gut in LoL", "Moneyboy MACHT gute Musik", "Pferdeäpfel sind die schlechtesten Äpfel",
-                            "Ich könnte das machen aber ich will es nur nicht", "Also ich bin eigentlich Pazifist", "Oh shes sweet but a psycho, a little bit psycho", "Frag nicht was für Saft, Orangensaft",
-                            "PokeTwo ist nicht cool!"};
-                    textChannel.sendMessage(words[new Random().nextInt(words.length)]).queue();
+                            "Ich könnte das machen aber ich will es nur nicht", "Also ich bin eigentlich Pazifist", "Oh shes sweet but a psycho, a little bit psycho", "Frag nicht was für Saft, Orangensaft"};
+                           textChannel.sendMessage(words[new Random().nextInt((words.length))]).queue();
                 }
             }
-            if((event.getMember() != null) && (event.getMember().getEffectiveName().equalsIgnoreCase("Revolution Manager"))) {
-                textChannel.deleteMessageById(event.getMessageId()).queueAfter(10, TimeUnit.SECONDS);
+            if((event.getMember() != null)) {
+                textChannel.deleteMessageById(event.getMessageId()).queueAfter(3, TimeUnit.SECONDS);
             }
         }
     }
