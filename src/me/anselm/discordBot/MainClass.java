@@ -1,7 +1,6 @@
 package me.anselm.discordBot;
 
 import me.anselm.discordBot.commands.CommandManager;
-import me.anselm.discordBot.file.FileManager;
 import me.anselm.discordBot.file.FileSaver;
 import me.anselm.discordBot.listener.ReadyListener;
 import me.anselm.discordBot.listener.ReceiveCommandListener;
@@ -18,19 +17,14 @@ import java.io.IOException;
 public class MainClass extends ListenerAdapter {
 
     public static String commandFilePath = "commands.dc";
-    public static String pokemonSentencePath = "pokemon.dc";
-    public static String insultPath = "insults.dc";
-
-
     public static final String prefix = "/";
     public static Guild guild;
     public static CommandManager commandManager;
     public static FileSaver fileSaver;
-    public static FileManager fileManager;
     public static JDA jda;
 
     public static void main(String[] args) throws IOException {
-        JDABuilder jdaBuilder = JDABuilder.createDefault("ODQzODk4MTgwMTI2MjQ0OTE2.YKKjbQ.yyIXlw0d_Vcy6EQBCnERm4dJLLU");
+        JDABuilder jdaBuilder = JDABuilder.createDefault("ODQzODk4MTgwMTI2MjQ0OTE2.YKKjbQ.D5h9dmviSpbgEAo0DnQ4k77p9QY");
         jdaBuilder.setActivity(Activity.watching("Sturm auf die Bastille"));
         jdaBuilder.addEventListeners(new ReceiveCommandListener());
         jdaBuilder.addEventListeners(new ReadyListener());
