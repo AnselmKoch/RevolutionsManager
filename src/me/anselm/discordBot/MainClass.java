@@ -1,6 +1,7 @@
 package me.anselm.discordBot;
 
 import me.anselm.discordBot.commands.CommandManager;
+import me.anselm.discordBot.file.FileManager;
 import me.anselm.discordBot.file.FileSaver;
 import me.anselm.discordBot.listener.ReadyListener;
 import me.anselm.discordBot.listener.ReceiveCommandListener;
@@ -17,14 +18,16 @@ import java.io.IOException;
 public class MainClass extends ListenerAdapter {
 
     public static String commandFilePath = "commands.dc";
+    public static String pokeFilePath = "pokeSpam.dc";
+    public static String roleFilePath = "roles.dc";
     public static final String prefix = "/";
     public static Guild guild;
     public static CommandManager commandManager;
-    public static FileSaver fileSaver;
+    public static FileManager fileManager;
     public static JDA jda;
 
     public static void main(String[] args) throws IOException {
-        JDABuilder jdaBuilder = JDABuilder.createDefault("ODQzODk4MTgwMTI2MjQ0OTE2.YKKjbQ.D5h9dmviSpbgEAo0DnQ4k77p9QY");
+        JDABuilder jdaBuilder = JDABuilder.createDefault("ODQzODk4MTgwMTI2MjQ0OTE2.YKKjbQ._HsLz93LankWzRlvl-OOxSMfMuA");
         jdaBuilder.setActivity(Activity.watching("Sturm auf die Bastille"));
         jdaBuilder.addEventListeners(new ReceiveCommandListener());
         jdaBuilder.addEventListeners(new ReadyListener());
@@ -44,16 +47,18 @@ public class MainClass extends ListenerAdapter {
     }
 
     public static Role getColorRoleFromMember(Member member) {
+        boolean createNewRole = true;
         for(Role role : member.getRoles()) {
-            if(role.getName().equalsIgnoreCase(member.getEffectiveName())) {
+            if(fileManager.getSaveFileFromName("roles").getFileReader().containsString(role.getId())) {
+                createNewRole = false;
                 return role;
             }
         }
-        if(!member.getGuild().getRoles().contains(member.getGuild().getRolesByName(member.getEffectiveName(), true))) {
-            Role role = member.getGuild().createRole().setName(member.getEffectiveName()).complete();
-            member.getGuild().addRoleToMember(member, role).queue();
-            return role;
-        }
+          if(createNewRole) {
+              Role role = guild.createRole().setName(member.getEffectiveName()).complete();
+              guild.addRoleToMember(member,role).queue();
+              return role;
+          }
         return member.getGuild().getRolesByName("null", true).get(0);
     }
 

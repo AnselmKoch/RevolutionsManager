@@ -30,25 +30,28 @@ public class FileSaver {
         bufferedWriter.close();
     }
 
+    public void saveString(String string) throws IOException {
+        fileOutputStream = new FileOutputStream(saveFile, true);
+        bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
+        if(!saveFile.getFileReader().containsString(string)) {
+
+            bufferedWriter.write(string);
+            bufferedWriter.newLine();
+            bufferedWriter.close();
+        }
+       saveFile.setContent(fileReader.readFile(getSaveFile()));
+    }
     public void saveCommand(Command command) throws IOException {
         fileOutputStream = new FileOutputStream(saveFile, true);
         bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
         SaveFile saveFile = MainClass.fileManager.getSaveFileFromName("command");
         if(command.getTextChannel() != null) {
             if(!saveFile.getFileReader().containsString(command.getCmdName())) {
-                try {
-                    bufferedWriter.write(command.getCmdName() + " " + command.getTextChannel().getId());
-                } catch (IOException e) {
-                    System.out.println("Failed to save command...");
-                    e.printStackTrace();
-                }
-                try {
-                    bufferedWriter.newLine();
-                    bufferedWriter.close();
-                } catch (IOException e) {
-                    System.out.println("Failed to write a new line...");
-                    e.printStackTrace();
-                }
+
+                bufferedWriter.write(command.getCmdName() + " " + command.getTextChannel().getId());
+                bufferedWriter.newLine();
+                bufferedWriter.close();
+
             }else{
                 System.out.println("Test123");
             }

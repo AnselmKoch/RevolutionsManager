@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
@@ -57,6 +58,10 @@ public abstract class SaveFile extends File implements Cloneable{
 
     public ArrayList<String> getContent() {
         return content;
+    }
+
+    public void setContent(ArrayList<String> strings) {
+        this.content = strings;
     }
 
     public void setName(String string) {

@@ -2,9 +2,11 @@ package me.anselm.discordBot.commands.command;
 
 import me.anselm.discordBot.MainClass;
 import me.anselm.discordBot.commands.Command;
+import me.anselm.discordBot.file.FileManager;
 import net.dv8tion.jda.api.entities.*;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class ColorCommand extends Command {
 
@@ -18,6 +20,14 @@ public class ColorCommand extends Command {
         String[] messageCommand = message.split(" ");
             if (messageCommand.length == 1) {
                 Role role = MainClass.getColorRoleFromMember(sender);
+                role.getManager().setHoisted(true);
+                try {
+                    if(!MainClass.fileManager.getSaveFileFromName("roles").getFileReader().containsString(role.getId())) {
+                        MainClass.fileManager.getSaveFileFromName("roles").getFileSaver().saveString(role.getId());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if (messageCommand[0].contains(",")) {
                     String RGBString = messageCommand[0];
                     String[] rgbvalues = RGBString.split(",");
