@@ -5,7 +5,6 @@ import me.anselm.discordBot.file.FileManager;
 import me.anselm.discordBot.file.FileSaver;
 import me.anselm.discordBot.listener.ReadyListener;
 import me.anselm.discordBot.listener.ReceiveCommandListener;
-import me.anselm.discordBot.listener.TikTakToeListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -26,14 +25,12 @@ public class MainClass extends ListenerAdapter {
     public static CommandManager commandManager;
     public static FileManager fileManager;
     public static JDA jda;
-    public static String jdaID = "843898180126244916";
 
     public static void main(String[] args) throws IOException {
-        JDABuilder jdaBuilder = JDABuilder.createDefault("ODQzODk4MTgwMTI2MjQ0OTE2.YKKjbQ.VUYV2VsZadR0vxXfApfZn4LXwjY");
+        JDABuilder jdaBuilder = JDABuilder.createDefault("ODQzODk4MTgwMTI2MjQ0OTE2.YKKjbQ._HsLz93LankWzRlvl-OOxSMfMuA");
         jdaBuilder.setActivity(Activity.watching("Sturm auf die Bastille"));
         jdaBuilder.addEventListeners(new ReceiveCommandListener());
         jdaBuilder.addEventListeners(new ReadyListener());
-        jdaBuilder.addEventListeners(new TikTakToeListener());
         try {
             jda = jdaBuilder.build();
         } catch (LoginException e) {
@@ -59,7 +56,6 @@ public class MainClass extends ListenerAdapter {
         }
           if(createNewRole) {
               Role role = guild.createRole().setName(member.getEffectiveName()).complete();
-              role.getManager().setHoisted(true).queue();
               guild.addRoleToMember(member,role).queue();
               return role;
           }
