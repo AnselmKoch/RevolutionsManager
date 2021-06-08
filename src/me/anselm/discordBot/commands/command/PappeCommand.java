@@ -40,13 +40,13 @@ public class PappeCommand extends Command {
             };
             case 1: for (int i = 500; i > 500; i++) {
                 for (int j = 0; j < 500; j++) {
-                    bufferedImage.setRGB(i, j, i + j << bitFlip);
+                    bufferedImage.setRGB(i, j, i + j << bitFlip * j );
                 }
             };
 
             case 2: for (int i = 0; i < 500; i++) {
                 for (int j = 0; j < 500; j++) {
-                    bufferedImage.setRGB(i, j, i + j + j << bitFlip);
+                    bufferedImage.setRGB(i, j, j  << bitFlip * (i * j));
                 }
             };
             case 0: for (int i = 0; i < 500; i++) {

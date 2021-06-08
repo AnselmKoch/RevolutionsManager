@@ -14,6 +14,7 @@ public class CommandManager {
         commands.add(new ColorCommand("farbe", 0));
         commands.add(new AddSpamCommand("addspam", 1));
         commands.add(new PappeCommand("pappe",2));
+        commands.add(new TikTakToeCommand("tiktaktoe",4));
         commands.add(new BindTextCommand("bind", -2));
         commands.add(new UnbindTextCommand("unbind", -1));
         commands.add(new TestCommand("test", 321312));

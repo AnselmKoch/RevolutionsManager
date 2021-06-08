@@ -1,11 +1,11 @@
 package me.anselm.discordBot.commands;
 
-import me.anselm.discordBot.listener.MessageReceiveListener;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.Event;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 public abstract class Command {
 
@@ -18,7 +18,7 @@ public abstract class Command {
         this.cmdName = cmdName;
     }
 
-    public abstract void execute(Member sender, String message, TextChannel textChannel, Guild guild);
+    public abstract void execute(Member sender, String message, TextChannel textChannel, Guild guild) throws IOException;
 
 
     public void setTextChannel(TextChannel textChannel) {

@@ -30,10 +30,12 @@ public class NameCommand extends Command {
 
         if(createNewRole) {
             Role role = guild.createRole().setName(message).complete();
+            role.getManager().setHoisted(true).queue();
             guild.addRoleToMember(sender,role).queue();
             try {
                 if(!MainClass.fileManager.getSaveFileFromName("roles").getFileReader().containsString(role.getId())) {
                     MainClass.fileManager.getSaveFileFromName("roles").getFileSaver().saveString(role.getId());
+                    guild.modifyRolePositions().selectPosition(role).moveUp(1).queue();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

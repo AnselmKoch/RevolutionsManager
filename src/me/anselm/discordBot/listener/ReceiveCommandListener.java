@@ -7,13 +7,14 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class ReceiveCommandListener extends ListenerAdapter {
 
-    public void onMessageReceived(MessageReceivedEvent event) throws NullPointerException {
+    public void onMessageReceived(MessageReceivedEvent event) {
         long messageID = event.getMessageIdLong();
         MainClass.guild = event.getGuild();
 
@@ -29,15 +30,27 @@ public class ReceiveCommandListener extends ListenerAdapter {
                 if(commandString.equalsIgnoreCase("bind")) {
 
                     message = message.replace(commandString + " ", "");
-                    command.execute(event.getMember(), message, event.getTextChannel(), event.getGuild());
+                    try {
+                        command.execute(event.getMember(), message, event.getTextChannel(), event.getGuild());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }else if(commandString.equalsIgnoreCase("unbind")) {
                     message = message.replace(commandString + " ", "");
-                    command.execute(event.getMember(), message, event.getTextChannel(), event.getGuild());
+                    try {
+                        command.execute(event.getMember(), message, event.getTextChannel(), event.getGuild());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }else{
                     if((command != null) && (command.getTextChannel() != null) && (command.getTextChannel().getId().equalsIgnoreCase(event.getTextChannel().getId()))) {
 
                         message = message.replace(commandString + " ", "");
-                        command.execute(event.getMember(), message, event.getTextChannel(), event.getGuild());
+                        try {
+                            command.execute(event.getMember(), message, event.getTextChannel(), event.getGuild());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 }
@@ -56,12 +69,18 @@ public class ReceiveCommandListener extends ListenerAdapter {
                     if (command.getTextChannel().getId().equalsIgnoreCase(textChannel.getId())) {
                         if(!event.getMember().getId().equalsIgnoreCase("716390085896962058")) {
                             shouldDelete = true;
+                            if((textChannel.getId().equalsIgnoreCase("847067890863833136")) && (!event.getMember().getId().equalsIgnoreCase("843898180126244916"))) {
+                                shouldDelete = true;
+                            }
                         }
                     }
                 }
             }
 
             if(message.startsWith("Hier deine Pappe...")) {
+                shouldDelete = false;
+            }
+            if(textChannel.getId().equalsIgnoreCase("847067890863833136")) {
                 shouldDelete = false;
             }
             if(shouldDelete){
