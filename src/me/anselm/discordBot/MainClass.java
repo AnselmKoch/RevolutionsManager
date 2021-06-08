@@ -25,6 +25,7 @@ public class MainClass extends ListenerAdapter {
     public static CommandManager commandManager;
     public static FileManager fileManager;
     public static JDA jda;
+    public static String jdaID = "843898180126244916";
 
     public static void main(String[] args) throws IOException {
         JDABuilder jdaBuilder = JDABuilder.createDefault("ODQzODk4MTgwMTI2MjQ0OTE2.YKKjbQ._HsLz93LankWzRlvl-OOxSMfMuA");
