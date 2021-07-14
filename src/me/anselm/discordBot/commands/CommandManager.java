@@ -1,6 +1,6 @@
 package me.anselm.discordBot.commands;
 
-import me.anselm.discordBot.MainClass;
+import me.anselm.discordBot.Bot;
 import me.anselm.discordBot.commands.command.*;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -13,17 +13,23 @@ public class CommandManager {
     public CommandManager() {
         commands.add(new ColorCommand("farbe", 0));
         commands.add(new AddSpamCommand("addspam", 1));
-        commands.add(new PappeCommand("pappe",2));
+        commands.add(new ShapePicCommand("shapepic",2));
         commands.add(new TikTakToeCommand("tiktaktoe",4));
         commands.add(new BindTextCommand("bind", -2));
         commands.add(new UnbindTextCommand("unbind", -1));
         commands.add(new TestCommand("test", 321312));
         commands.add(new NameCommand("name", 3));
+        commands.add(new UpCommand("up",5));
+        commands.add(new DownCommand("down", 6));
+        commands.add(new DrawCommand("draw", 9));
+        commands.add(new DeleteCommand("delete", 10));
+        commands.add(new AvatarCommand("avatar", 11));
+        commands.add(new ZitatCommand("zitat", 12));
     }
 
 
     public static TextChannel getTextChannelFromID(String ID) {
-        for(TextChannel textChannel : MainClass.guild.getTextChannels()) {
+        for(TextChannel textChannel : Bot.guild.getTextChannels()) {
             if(textChannel.getId().equalsIgnoreCase(ID)) {
                 return textChannel;
             }

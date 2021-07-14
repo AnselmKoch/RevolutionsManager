@@ -7,20 +7,19 @@ import net.dv8tion.jda.api.managers.RoleManager;
 
 import java.io.IOException;
 
-public class NameCommand extends Command {
-
-    public NameCommand(String cmdName, int cmdID) {
+public class UpCommand extends Command {
+    public UpCommand(String cmdName, int cmdID) {
         super(cmdName, cmdID);
     }
 
     @Override
-    public void execute(Member sender, String message, TextChannel textChannel, Guild guild) {
-        RoleManager roleManager = null;
+    public void execute(Member sender, String message, TextChannel textChannel, Guild guild) throws IOException {
         Role role = Bot.getPlayerRole(sender);
-        if(role != null) {
-            roleManager = role.getManager();
-            System.out.println("HALLO");
-            roleManager.setName(message).queue();
+        RoleManager roleManager = role.getManager();
+        try{
+            guild.modifyRolePositions().selectPosition(role).moveUp(1).queue();
+        }catch (Exception e) {
+            textChannel.sendMessage("Die Position der Rolle ist bereits am Maximum...");
         }
     }
 

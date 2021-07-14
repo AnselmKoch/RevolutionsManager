@@ -1,8 +1,7 @@
 package me.anselm.discordBot.commands.command;
 
-import me.anselm.discordBot.MainClass;
+import me.anselm.discordBot.Bot;
 import me.anselm.discordBot.commands.Command;
-import me.anselm.discordBot.file.FileManager;
 import net.dv8tion.jda.api.entities.*;
 
 import java.awt.*;
@@ -19,15 +18,8 @@ public class ColorCommand extends Command {
         System.out.println(sender.getEffectiveName() + " executed " + getCmdName() + " :  " + message);
         String[] messageCommand = message.split(" ");
             if (messageCommand.length == 1) {
-                Role role = MainClass.getColorRoleFromMember(sender);
-                role.getManager().setHoisted(true);
-                try {
-                    if(!MainClass.fileManager.getSaveFileFromName("roles").getFileReader().containsString(role.getId())) {
-                        MainClass.fileManager.getSaveFileFromName("roles").getFileSaver().saveString(role.getId());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Role role = Bot.getPlayerRole(sender);
+
                 if (messageCommand[0].contains(",")) {
                     String RGBString = messageCommand[0];
                     String[] rgbvalues = RGBString.split(",");
@@ -38,7 +30,7 @@ public class ColorCommand extends Command {
                             int blue = Integer.valueOf(rgbvalues[2]);
 
                             Color color = new Color(red, green, blue);
-                            MainClass.updateRoleColor(color.getRGB(), role);
+                            Bot.updateRoleColor(color.getRGB(), role);
                         } catch (NumberFormatException e) {
 
                         }
@@ -46,46 +38,51 @@ public class ColorCommand extends Command {
                 } else {
                     try {
                         int rgbValue = Integer.valueOf(messageCommand[0]);
-                        MainClass.updateRoleColor(rgbValue, role);
+                        Bot.updateRoleColor(rgbValue, role);
                     } catch (NumberFormatException numberFormatException) {
 
-                        switch (messageCommand[0]) {
+                        switch (messageCommand[0].toLowerCase()) {
                             case "blau":
-                                MainClass. updateRoleColor(Color.BLUE.getRGB(), role);
+                                Bot. updateRoleColor(Color.BLUE.getRGB(), role);
                                 break;
                             case "schwarz":
-                                MainClass.updateRoleColor(15, role);
+                                Bot.updateRoleColor(15, role);
                                 break;
                             case "rot":
-                                MainClass.updateRoleColor(Color.RED.getRGB(), role);
+                                Bot.updateRoleColor(Color.RED.getRGB(), role);
                                 break;
                             case "grün":
-                                MainClass. updateRoleColor(Color.GREEN.getRGB(), role);
+                                Bot. updateRoleColor(Color.GREEN.getRGB(), role);
                                 break;
                             case "gelb":
-                                MainClass.updateRoleColor(Color.YELLOW.getRGB(), role);
+                                Bot.updateRoleColor(Color.YELLOW.getRGB(), role);
                                 break;
                             case "magenta":
-                                MainClass. updateRoleColor(Color.MAGENTA.getRGB(), role);
+                                Bot. updateRoleColor(Color.MAGENTA.getRGB(), role);
                                 break;
                             case "grau":
-                                MainClass. updateRoleColor(Color.gray.getRGB(), role);
+                                Bot. updateRoleColor(Color.gray.getRGB(), role);
                                 break;
                             case "weiß":
-                                MainClass. updateRoleColor(Color.white.getRGB(), role);
+                                Bot. updateRoleColor(Color.white.getRGB(), role);
                                 break;
                             case "türkis":
-                                MainClass. updateRoleColor(Color.cyan.getRGB(), role);
+                                Bot. updateRoleColor(Color.cyan.getRGB(), role);
                                 break;
                             case "orange":
-                                MainClass.updateRoleColor(Color.orange.getRGB(), role);
+                                Bot.updateRoleColor(Color.orange.getRGB(), role);
                                 break;
                             case "pink":
-                                MainClass. updateRoleColor(Color.PINK.getRGB(), role);
+                                Bot. updateRoleColor(Color.PINK.getRGB(), role);
                                 break;
                         }
                     }
                 }
             }
         }
+
+    @Override
+    public void execute(Member sender, Message message, TextChannel textChannel, Guild guild) throws IOException {
+
     }
+}

@@ -3,6 +3,7 @@ package me.anselm.discordBot.commands.command;
 import me.anselm.discordBot.commands.Command;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.imageio.ImageIO;
@@ -12,10 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-public class PappeCommand extends Command {
+public class ShapePicCommand extends Command {
 
 
-    public PappeCommand(String cmdName, int cmdID) {
+    public ShapePicCommand(String cmdName, int cmdID) {
         super(cmdName, cmdID);
     }
 
@@ -67,5 +68,10 @@ public class PappeCommand extends Command {
             e.printStackTrace();
         }
         textChannel.sendMessage("Hier deine Pappe...").addFile(file).queue();
+    }
+
+    @Override
+    public void execute(Member sender, Message message, TextChannel textChannel, Guild guild) throws IOException {
+
     }
 }

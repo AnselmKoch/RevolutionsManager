@@ -1,11 +1,9 @@
 package me.anselm.discordBot.file;
 
-import me.anselm.discordBot.MainClass;
 import me.anselm.discordBot.commands.Command;
 import me.anselm.discordBot.commands.CommandManager;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FileReader {

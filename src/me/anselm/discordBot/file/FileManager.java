@@ -1,6 +1,6 @@
 package me.anselm.discordBot.file;
 
-import me.anselm.discordBot.MainClass;
+import me.anselm.discordBot.Bot;
 import me.anselm.discordBot.file.savefiles.CommandFile;
 import me.anselm.discordBot.file.savefiles.PokeSpamFile;
 import me.anselm.discordBot.file.savefiles.RoleFiles;
@@ -14,9 +14,9 @@ public class FileManager {
 
     public FileManager() throws IOException {
         saveFiles = new ArrayList<>();
-        saveFiles.add(new CommandFile(MainClass.commandFilePath, "command"));
-        saveFiles.add(new PokeSpamFile(MainClass.pokeFilePath, "pokespam"));
-        saveFiles.add(new RoleFiles(MainClass.roleFilePath, "roles"));
+        saveFiles.add(new CommandFile(Bot.commandFilePath, "command"));
+        saveFiles.add(new PokeSpamFile(Bot.pokeFilePath, "pokespam"));
+        saveFiles.add(new RoleFiles(Bot.roleFilePath, "roles"));
     }
 
     public void removeAndAddSaveFile(SaveFile saveFile) {

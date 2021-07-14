@@ -1,8 +1,10 @@
 package me.anselm.discordBot.games.game;
 
+import me.anselm.discordBot.Bot;
 import me.anselm.discordBot.commands.command.TikTakToeCommand;
 import me.anselm.discordBot.games.Game;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.imageio.ImageIO;
@@ -18,15 +20,17 @@ public class TikTakToe extends Game{
     public static TikTakToe instance;
     private BufferedImage bufferedImage;
     public static Member[] players = new Member[2];
-    private boolean isMemberOneTurn;
+    private Member memberOnTurn;
     public static boolean running;
     private static BufferedImage userImage;
     private static Graphics graphics;
-    private int[] values;
     private int[] fields;
+    private int turns;
     private Member gameWinner;
+    private File fieldFile;
 
-    public TikTakToe() {
+    public TikTakToe(TextChannel textChannel) {
+        super(textChannel);
         instance = this;
     }
 
@@ -34,13 +38,48 @@ public class TikTakToe extends Game{
     public void start() {
         running = true;
         players = new Member[2];
-        isMemberOneTurn = true;
+        turns = 0;
         bufferedImage = createImage();
-        values = new int[]{0,1,2,3,4,5,6,7,8};
         fields =  new int[9];
-        isMemberOneTurn = true;
+        try {
+            fieldFile =  new File("tiktaktoeField.png");
+            fieldFile.createNewFile();
+            ImageIO.write(bufferedImage, "png", fieldFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.getGameChannel().sendMessage("TikTakToe gestartet...").addFile(fieldFile).queue();
     }
 
+    public void processTurn(int tile, Member sender) {
+        if(!isOccupied(tile) && sender.getId().equalsIgnoreCase(getMemberOnTurn().getId())) {
+            turns++;
+            try {
+                ImageIO.write(drawOnTile(tile, sender), "png", fieldFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Bot.sendMessageWithFile(getGameChannel(), Bot.pingMember(getMemberOnTurn()) + " setzt auf Feld " + String.valueOf(tile) + "...", fieldFile);
+            if (getMemberOnTurn().getId().equalsIgnoreCase(players[0].getId())) {
+                setMemberOnTurn(players[1]);
+                fields[tile - 1] = 1;
+            } else {
+                setMemberOnTurn(players[0]);
+                fields[tile - 1] = 2;
+            }
+            if (!checkWinner()) {
+                if (turns != 9) {
+                    Bot.sendMessage(getGameChannel(), "<@" + getMemberOnTurn().getId() + "> ist jetzt dran!");
+                } else {
+                    Bot.sendMessage(getGameChannel(), "Das Spiel ist unentschieden ausgegangen...Beende spiel...");
+                    endGame();
+                }
+            } else {
+                Bot.sendMessage(getGameChannel(), "<@" + getGameWinner().getId() + "> hat gewonnen!!");
+                endGame();
+            }
+        }
+    }
     public BufferedImage createImage() {
         BufferedImage bufferedImage = new BufferedImage(500,500,BufferedImage.TYPE_INT_RGB);
         if(bufferedImage.getGraphics() == null) {
@@ -79,7 +118,11 @@ public class TikTakToe extends Game{
 
     public static BufferedImage drawOnTile(int tile, Member sender) throws IOException {
         URL userURL;
-        userURL = new URL(sender.getUser().getAvatarUrl());
+        try {
+            userURL = new URL(sender.getUser().getAvatarUrl());
+        }catch (MalformedURLException e) {
+            userURL = new URL("https://media.resources.festicket.com/image/300x300/center/top/filters:quality(70)/www/artists/bladee.jpg");
+        }
         userImage = ImageIO.read(userURL);
         userImage = resize(userImage, 500 / 3 - 4, 500 / 3 - 4);
         File file = new File("testuser.png");
@@ -118,51 +161,61 @@ public class TikTakToe extends Game{
         players[0] = null;
         players[1] = null;
         running = false;
+        instance = null;
     }
     public boolean checkWinner() {
+        for(int i = 0; i < 9; i++) {
+            System.out.println(fields[i]);
+        }
        if(fields[0] * fields[1] * fields[2] == 1) {
            gameWinner = players[0];
            return true;
-       }else if(fields[0] * fields[1] * fields[2] == 6) {
+       }else if(fields[0] * fields[1] * fields[2] == 8) {
            gameWinner = players[1];
            return true;
        }
         if(fields[6] * fields[7] * fields[8] == 1) {
             gameWinner = players[0];
             return true;
-        }else if(fields[6] * fields[7] * fields[8] == 6) {
+        }else if(fields[6] * fields[7] * fields[8] == 8) {
             gameWinner = players[1];
             return true;
         }
         if(fields[0] * fields[4] * fields[8] == 1) {
             gameWinner = players[0];
             return true;
-        }else if(fields[0] * fields[4] * fields[8] == 6) {
+        }else if(fields[0] * fields[4] * fields[8] == 8) {
             gameWinner = players[1];
             return true;
         }
         if(fields[0] * fields[3] * fields[6] == 1) {
             gameWinner = players[0];
             return true;
-        }else if(fields[0] * fields[3] * fields[6] == 6) {
+        }else if(fields[0] * fields[3] * fields[6] == 8) {
             gameWinner = players[1];
             return true;
         }
         if(fields[2] * fields[5] * fields[8] == 1) {
             gameWinner = players[0];
             return true;
-        }else if(fields[2] * fields[5] * fields[8] == 6) {
+        }else if(fields[2] * fields[5] * fields[8] == 8) {
             gameWinner = players[1];
             return true;
         }
         if(fields[2] * fields[4] * fields[6] == 1) {
             gameWinner = players[0];
             return true;
-        }else if(fields[2] * fields[4] * fields[6] == 6) {
+        }else if(fields[2] * fields[4] * fields[6] == 8) {
             gameWinner = players[1];
             return true;
         }
-
+        if(fields[1] * fields[4] * fields[7] == 1) {
+            gameWinner = players[0];
+            return true;
+        }else if(fields[1] * fields[4] * fields[7] == 8) {
+            gameWinner = players[1];
+            return true;
+        }
 
         return false;
     }
@@ -176,12 +229,8 @@ public class TikTakToe extends Game{
         this.fields[index] = value;
     }
 
-    public void setValue(int index, int value) {
-        this.values[index] = value;
-    }
-
     public boolean isOccupied(int index) {
-        if(fields[index] == 1 || fields[index] == 2) {
+        if(fields[index-1] == 1 || fields[index-1] == 2) {
             return true;
         }else{
             return false;
@@ -194,19 +243,16 @@ public class TikTakToe extends Game{
         return fields;
     }
 
-    public int[] getValues() {
-        return values;
-    }
-
-    public boolean isMemberOneTurn() {
-        return isMemberOneTurn;
-    }
-
-    public void setMemberOneTurn(boolean memberOneTurn) {
-        isMemberOneTurn = memberOneTurn;
-    }
 
     public Member getGameWinner() {
         return gameWinner;
+    }
+
+    public Member getMemberOnTurn() {
+        return memberOnTurn;
+    }
+
+    public void setMemberOnTurn(Member memberOnTurn) {
+        this.memberOnTurn = memberOnTurn;
     }
 }

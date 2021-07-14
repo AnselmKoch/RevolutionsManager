@@ -3,6 +3,7 @@ package me.anselm.discordBot.commands.command;
 import me.anselm.discordBot.commands.Command;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.imageio.ImageIO;
@@ -23,6 +24,11 @@ public class TestCommand extends Command {
 
         textChannel.sendMessage("Test erfolgreich!!").queue();
 
+
+    }
+
+    @Override
+    public void execute(Member sender, Message message, TextChannel textChannel, Guild guild) throws IOException {
 
     }
 }

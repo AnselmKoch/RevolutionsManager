@@ -1,9 +1,7 @@
 package me.anselm.discordBot.file;
 
-import me.anselm.discordBot.MainClass;
+import me.anselm.discordBot.Bot;
 import me.anselm.discordBot.commands.Command;
-import me.anselm.discordBot.file.savefiles.CommandFile;
-import me.anselm.ello.Main;
 
 import java.io.*;
 
@@ -44,7 +42,7 @@ public class FileSaver {
     public void saveCommand(Command command) throws IOException {
         fileOutputStream = new FileOutputStream(saveFile, true);
         bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
-        SaveFile saveFile = MainClass.fileManager.getSaveFileFromName("command");
+        SaveFile saveFile = Bot.fileManager.getSaveFileFromName("command");
         if(command.getTextChannel() != null) {
             if(!saveFile.getFileReader().containsString(command.getCmdName())) {
 
@@ -56,7 +54,7 @@ public class FileSaver {
                 System.out.println("Test123");
             }
         }
-        fileReader.readFile(MainClass.fileManager.getSaveFileFromName("command"));
+        fileReader.readFile(Bot.fileManager.getSaveFileFromName("command"));
     }
 
     public SaveFile getSaveFile() {

@@ -1,6 +1,5 @@
 package me.anselm.discordBot.file.savefiles;
 
-import me.anselm.discordBot.MainClass;
 import me.anselm.discordBot.commands.Command;
 import me.anselm.discordBot.commands.CommandManager;
 import me.anselm.discordBot.file.SaveFile;
@@ -14,6 +13,7 @@ public class CommandFile extends SaveFile {
     public CommandFile(String pathname, String name) throws IOException {
         super(pathname, name);
     }
+
 
     @Override
     protected void setupContent() {

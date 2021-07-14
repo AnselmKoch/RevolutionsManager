@@ -1,11 +1,12 @@
 package me.anselm.discordBot.commands.command;
 
-import me.anselm.discordBot.MainClass;
+import me.anselm.discordBot.Bot;
 import me.anselm.discordBot.commands.Command;
 import me.anselm.discordBot.commands.CommandManager;
 import me.anselm.discordBot.file.SaveFile;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class BindTextCommand extends Command {
         String[] args = message.split(" ");
         if(args.length == 1) {
             Command commandToBind = CommandManager.getCommandFromName(message);
-            SaveFile saveFile = MainClass.fileManager.getSaveFileFromName("command");
+            SaveFile saveFile = Bot.fileManager.getSaveFileFromName("command");
             if(commandToBind.getTextChannel() == null) {
                 commandToBind.setTextChannel(textChannel);
                 try {
@@ -36,5 +37,10 @@ public class BindTextCommand extends Command {
                 textChannel.sendMessage("An dem Command '" + commandToBind.getCmdName() + "' ist bereits der Channel '" + CommandManager.getTextChannelFromID(commandToBind.getTextChannel().getId()).getName() + "' gebunden...").queue();
             }
         }
+    }
+
+    @Override
+    public void execute(Member sender, Message message, TextChannel textChannel, Guild guild) throws IOException {
+
     }
 }

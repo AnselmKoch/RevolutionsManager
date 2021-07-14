@@ -1,14 +1,11 @@
 package me.anselm.discordBot.file;
 
-import me.anselm.discordBot.MainClass;
+import me.anselm.discordBot.Bot;
 import me.anselm.discordBot.file.savefiles.CommandFile;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.concurrent.TimeoutException;
 
 public abstract class SaveFile extends File implements Cloneable{
 
@@ -44,7 +41,7 @@ public abstract class SaveFile extends File implements Cloneable{
         System.gc();
         currentSaveFile.delete();
         tempFile.renameTo(currentSaveFile);
-        MainClass.fileManager.removeAndAddSaveFile(tempFile);
+        Bot.fileManager.removeAndAddSaveFile(tempFile);
     }
     public String getName() {
         return this.name;
